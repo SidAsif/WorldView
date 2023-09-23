@@ -1,0 +1,13 @@
+.countryDetailsWrapper {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid black;
+}
+img {
+  width: 345px;
+  height: auto;
+  object-fit: cover;
+}
