@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 
@@ -38,17 +38,17 @@ function Home() {
   const [sortOrder, setSortOrder] = useState("asc"); // "asc" or "desc"
   const [sortCriteria, setSortCriteria] = useState("name"); // "name" or "region"
 
-  const handleSearch = () => {
-    const filteredCountries = allCountriesList.filter((country) => {
-      const isMatchingName = country.name
-        .toLowerCase()
-        .includes(countryName.toLowerCase());
-      const isMatchingRegion = region === "" || country.region === region;
-      return isMatchingName && isMatchingRegion;
-    });
+  // const handleSearch = () => {
+  //   const filteredCountries = allCountriesList.filter((country) => {
+  //     const isMatchingName = country.name
+  //       .toLowerCase()
+  //       .includes(countryName.toLowerCase());
+  //     const isMatchingRegion = region === "" || country.region === region;
+  //     return isMatchingName && isMatchingRegion;
+  //   });
 
-    setFilteredCountriesList(filteredCountries);
-  };
+  //   setFilteredCountriesList(filteredCountries);
+  // };
 
   const handleSort = (criteria) => {
     // Toggle sort order if clicking on the same criteria
