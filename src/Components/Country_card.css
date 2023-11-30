@@ -1,0 +1,10 @@
+#country-card {
+  max-width: 345px;
+  width: 270px;
+  margin: 8px;
+}
+@media screen and (max-width: 600px) {
+  #country-card {
+    width: 328px;
+  }
+}
