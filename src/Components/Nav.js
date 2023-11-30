@@ -29,7 +29,7 @@ export default function Nav() {
               fontFamily: "Roboto, sans-serif",
             }}
           >
-            THE WORLDVIEW
+            WORLDVIEW
           </Typography>
           <IconButton color="inherit">
             <AccountCircleIcon />
