@@ -7,6 +7,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 55px;
 }
 .MuiInputBase-root {
   margin-top: 18px;

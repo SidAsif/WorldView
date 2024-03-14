@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 // import Avatar from "@mui/material/Avatar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../Components/Nav.css";
+import { TravelExplore } from "@mui/icons-material";
 
 export default function Nav() {
   const appBarStyle = {
@@ -15,15 +16,18 @@ export default function Nav() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={appBarStyle}>
+      <AppBar position="fixed" style={appBarStyle}>
         <Toolbar variant="dense">
+          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
+            <TravelExplore />
+          </IconButton>
           <Typography
             variant="h6"
             color="inherit"
             component="div"
             sx={{
               flexGrow: 1,
-              fontSize: "2rem",
+
               fontWeight: "bold",
               letterSpacing: "2px",
               fontFamily: "Roboto, sans-serif",
