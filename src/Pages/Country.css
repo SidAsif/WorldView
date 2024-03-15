@@ -3,16 +3,9 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
-  border: 2px solid grey;
 }
 img {
   width: 345px;
   height: 330px;
   object-fit: cover;
-}
-h1 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
 }
