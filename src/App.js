@@ -1,7 +1,7 @@
-import Home from "./Pages/Home";
 import CountryDetails from "./Pages/CountryDetails";
 import Nav from "./Components/Nav";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Pages/Home";
 
 function App() {
   return (

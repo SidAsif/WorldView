@@ -1,17 +1,15 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-// import Avatar from "@mui/material/Avatar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../Components/Nav.css";
 import { TravelExplore } from "@mui/icons-material";
 
 export default function Nav() {
   const appBarStyle = {
-    backgroundColor: "#009EDB", // Change this to the color you want
+    backgroundColor: "#1976d2",
   };
 
   return (
