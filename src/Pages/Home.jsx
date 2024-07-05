@@ -1,5 +1,5 @@
-import CountryCard from "../Components/CountryCard";
 import * as React from "react";
+import CountryCard from "../Components/CountryCard";
 import { useEffect, useState } from "react";
 import { getAllCountries } from "../Services/index";
 import { Link } from "react-router-dom";
