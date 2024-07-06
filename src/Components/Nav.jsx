@@ -38,7 +38,7 @@ export default function Nav() {
     color: "Black",
     textDecoration: "none",
     marginLeft: "20px",
-    fontSize: "1.5rem",
+    fontSize: "1.4rem",
   };
   const smallScreenStyle = {
     color: "black",
@@ -100,6 +100,16 @@ export default function Nav() {
               }}
               open={open}
               onClose={handleClose}
+              PaperProps={{
+                style: {
+                  width: "100%",
+                  // maxWidth: "100%",
+                  left: 0,
+                  right: 0,
+                  top: 56,
+                  position: "absolute",
+                },
+              }}
             >
               <MenuItem onClick={handleClose}>
                 <RouterLink to="/" style={smallScreenStyle}>

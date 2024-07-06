@@ -54,7 +54,7 @@ export default function CountryDetails(props) {
       <Typography variant="subtitle1" mt={1} sx={{ color: "text.secondary" }}>
         Country Overview
       </Typography>
-      <Box sx={{ mt: 2, p: 2 }}>
+      <Box sx={{ mt: 2, padding: { md: 2, sm: 0 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <Card className="countryDetailsWrapper">

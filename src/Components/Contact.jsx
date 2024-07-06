@@ -27,7 +27,6 @@ const Footer = () => {
         position: "sticky",
       }}
     >
-      ,
       <Container
         maxWidth="xl"
         sx={{
@@ -138,7 +137,12 @@ const Footer = () => {
                   variant="contained"
                   color="primary"
                   size="medium"
-                  style={{ marginLeft: "10px", backgroundColor: "#008080" }}
+                  style={{
+                    marginLeft: "10px",
+                    backgroundColor: "#008080",
+                    paddingLeft: "23px",
+                    paddingRight: "23px",
+                  }}
                 >
                   Subscribe
                 </Button>
@@ -150,7 +154,7 @@ const Footer = () => {
         <Typography
           variant="body2"
           align="center"
-          style={{ marginTop: "20px", color: "#008080" }}
+          style={{ marginTop: "20px", color: "#000000" }}
         >
           &copy; {new Date().getFullYear()} CodeCraft. All rights reserved.
         </Typography>
