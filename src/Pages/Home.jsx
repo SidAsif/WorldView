@@ -102,13 +102,13 @@ function Home() {
   const totalPages = Math.ceil(filteredCoutriesList.length / postsPerPage);
 
   return (
-    <Box sx={{ padding: 2, marginTop: 10 }}>
+    <Box sx={{ pt: 12, mt: 3, pr: 3, pl: 3, pb: 3 }}>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12} sm={6} md={4}>
           <TextField
             fullWidth
             id="outlined-basic"
-            label="Filter by Name"
+            label="Find Your Country"
             variant="outlined"
             onChange={(e) => setCountryName(e.target.value)}
             value={countryName}
@@ -117,13 +117,13 @@ function Home() {
         <Grid item xs={12} sm={6} md={4}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-helper-label">
-              Filter by Region
+              Select Your Region
             </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               value={region}
-              label="Filter by Region"
+              label="Select Your Region"
               onChange={(e) => setRegion(e.target.value)}
             >
               <MenuItem value={""}>All</MenuItem>
@@ -143,9 +143,9 @@ function Home() {
           onClick={() => handleSort("name")}
           sx={{
             mr: 1,
-            bgcolor: "#1976d2",
+            bgcolor: "#008080",
             "&:hover": {
-              bgcolor: "#1565c0",
+              bgcolor: "#218080",
             },
           }}
         >
@@ -155,9 +155,9 @@ function Home() {
           variant="contained"
           onClick={() => handleSort("region")}
           sx={{
-            bgcolor: "#1976d2",
+            bgcolor: "#008080",
             "&:hover": {
-              bgcolor: "#1565c0",
+              bgcolor: "#218080",
             },
           }}
         >
@@ -203,7 +203,12 @@ function Home() {
             ))}
       </Grid>
       <Box
-        sx={{ display: "flex", justifyContent: "center", mt: 2, padding: 2 }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: 2,
+          padding: 2,
+        }}
       >
         <Pagination
           count={totalPages}
@@ -212,7 +217,15 @@ function Home() {
           siblingCount={1}
           boundaryCount={1}
           shape="rounded"
-          color="primary"
+          sx={{
+            "& .Mui-selected": {
+              backgroundColor: "#008080 !important",
+              color: "white !important",
+            },
+            "& .Mui-selected:hover": {
+              backgroundColor: "#218080 !important",
+            },
+          }}
         />
       </Box>
     </Box>

@@ -1,37 +1,63 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCountryDetails } from "../Services/index";
+import {
+  getCountryDetails,
+  getCountryAdditionalDetails,
+} from "../Services/index";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Paper, Stack, Grid } from "@mui/material";
-// import "./Country.css";
+import { Stack, Grid, Divider, Box } from "@mui/material";
+
 export default function CountryDetails(props) {
   const { countryCode } = useParams();
   const [detail, setDetail] = useState({});
+  const [additionalDetails, setAdditionalDetails] = useState("");
 
   useEffect(() => {
-    getCountryDetails(countryCode).then((result) => {
-      console.log(result.data);
-      setDetail(result.data);
-    });
-  }, [countryCode]);
-  console.log("CountryCode: ", countryCode);
+    async function fetchData() {
+      try {
+        const countryDetailResponse = await getCountryDetails(countryCode);
+        setDetail(countryDetailResponse.data);
 
+        const countryName = countryDetailResponse.data.name;
+        const additionalDetailsResponse = await getCountryAdditionalDetails(
+          countryName
+        );
+        const pageKey = Object.keys(
+          additionalDetailsResponse.data.query.pages
+        )[0];
+        setAdditionalDetails(
+          additionalDetailsResponse.data.query.pages[pageKey].extract
+        );
+      } catch (error) {
+        console.error("Error fetching country details:", error);
+      }
+    }
+
+    fetchData();
+  }, [countryCode]);
   return (
     <Stack
       justifyContent={"center"}
       alignItems={"center"}
-      sx={{ mt: 10, mb: 2 }}
+      sx={{ mt: 10, mb: 2, padding: 2 }}
     >
-      <Typography variant="h4" mt={7} sx={{ textTransform: "uppercase" }}>
-        about {detail.name}
+      <Typography
+        variant="h3"
+        mt={7}
+        sx={{ textTransform: "uppercase", fontWeight: "bold" }}
+      >
+        {detail.name}
       </Typography>
-      <Paper sx={{ mt: 2, maxWidth: 1000 }}>
-        <Card className="countryDetailsWrapper">
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+      <Typography variant="subtitle1" mt={1} sx={{ color: "text.secondary" }}>
+        Country Overview
+      </Typography>
+      <Box sx={{ mt: 2, p: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
+            <Card className="countryDetailsWrapper">
               <CardMedia sx={{ m: 2 }}>
                 <img
                   src={detail.flags?.png}
@@ -43,26 +69,23 @@ export default function CountryDetails(props) {
                   }}
                 />
               </CardMedia>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CardContent style={{ marginLeft: "20px" }}>
+              <CardContent>
                 <Typography
                   gutterBottom
                   variant="h5"
-                  component="div"
                   style={{ background: "lightGrey", padding: "5px" }}
                 >
-                  Name: {detail.name}
+                  Name: {detail.name || "N/A"}
                 </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  Capital: {detail.capital}
+                <Typography gutterBottom variant="h5">
+                  Capital: {detail.capital || "N/A"}
                 </Typography>
                 <Typography
                   gutterBottom
                   variant="h5"
                   style={{ background: "lightGrey", padding: "5px" }}
                 >
-                  Region: {detail.region}
+                  Region: {detail.region || "N/A"}
                 </Typography>
                 <Typography gutterBottom variant="h5">
                   Area: {detail.area?.toLocaleString() ?? "N/A"} km<sup>2</sup>
@@ -94,10 +117,31 @@ export default function CountryDetails(props) {
                   Timezones: {detail.timezones?.join(", ") ?? "N/A"}
                 </Typography>
               </CardContent>
-            </Grid>
+            </Card>
           </Grid>
-        </Card>
-      </Paper>
+          <Grid item xs={12} md={8}>
+            <CardContent>
+              <Typography variant="h5" sx={{ mt: 2 }}>
+                History
+              </Typography>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="body1" paragraph>
+                {additionalDetails || "No data Available"}
+              </Typography>
+              <Typography variant="h5" sx={{ mt: 2 }}>
+                Economy
+              </Typography>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="body1" paragraph></Typography>
+              <Typography variant="h5" sx={{ mt: 2 }}>
+                Geography
+              </Typography>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="body1" paragraph></Typography>
+            </CardContent>
+          </Grid>
+        </Grid>
+      </Box>
     </Stack>
   );
 }
