@@ -20,7 +20,7 @@ import axios from "axios";
 function Home() {
   const [countdata, setCountData] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [postsPerPage] = React.useState(20);
+  const [postsPerPage] = React.useState(28);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {

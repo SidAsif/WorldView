@@ -14,10 +14,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/countries/:countryCode" element={<CountryDetails />} />
           <Route path="/news" element={<News />} />
-
           <Route path="*" element={<h2>No Data Found</h2>} />
         </Routes>
-        <Contact />
+        <div id="contact">
+          <Contact />
+        </div>
       </BrowserRouter>
     </div>
   );

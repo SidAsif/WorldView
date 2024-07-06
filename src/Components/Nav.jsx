@@ -7,7 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import { TravelExplore } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -99,19 +100,26 @@ export default function Nav() {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>
-                <Link to="/" style={smallScreenStyle}>
+                <RouterLink to="/" style={smallScreenStyle}>
                   Home
-                </Link>
+                </RouterLink>
               </MenuItem>
               <MenuItem onClick={handleClose}>
-                <Link to="/news" style={smallScreenStyle}>
+                <RouterLink to="/news" style={smallScreenStyle}>
                   News
-                </Link>
+                </RouterLink>
               </MenuItem>
               <MenuItem onClick={handleClose}>
-                <Link to="/contact" style={smallScreenStyle}>
+                <ScrollLink
+                  to="contact"
+                  spy={true}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  style={smallScreenStyle}
+                >
                   Contact Us
-                </Link>
+                </ScrollLink>
               </MenuItem>
             </Menu>
           </Toolbar>
@@ -151,15 +159,22 @@ export default function Nav() {
             </Typography>
 
             <Typography>
-              <Link to="/" style={linkStyle}>
+              <RouterLink to="/" style={linkStyle}>
                 Home
-              </Link>
-              <Link to="/news" style={linkStyle}>
+              </RouterLink>
+              <RouterLink to="/news" style={linkStyle}>
                 News
-              </Link>
-              <Link to="/contact" style={linkStyle}>
+              </RouterLink>
+              <ScrollLink
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+                style={linkStyle}
+              >
                 Contact Us
-              </Link>
+              </ScrollLink>
             </Typography>
           </Toolbar>
         </AppBar>

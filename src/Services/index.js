@@ -2,9 +2,7 @@ import axios from "axios";
 
 const COUNTRY_API_ENDPOINT = "https://restcountries.com/v2";
 const WIKIPEDIA_API_ENDPOINT = "https://en.wikipedia.org/w/api.php";
-const NEWS_API_ENDPOINT = "https://newsapi.org/v2";
-const NEWS_API_KEY = "d27c5da8cd694545a29e751a7297e194";
-
+// const BASE_URL = "https://saurav.tech/NewsAPI/";
 export function getAllCountries() {
   return axios.get(`${COUNTRY_API_ENDPOINT}/all`);
 }
@@ -27,28 +25,12 @@ export function getCountryAdditionalDetails(countryName) {
   });
 }
 
-export function getTopHeadlines(country) {
-  return axios.get(`${NEWS_API_ENDPOINT}/top-headlines`, {
-    params: {
-      apiKey: NEWS_API_KEY,
-      country: country,
-    },
-  });
-}
+// export function getTopHeadlines(category, countryCode) {
+//   return axios.get(
+//     `${BASE_URL}/top-headlines/category/${category}/${countryCode}.json`
+//   );
+// }
 
-export function getEverything(query) {
-  return axios.get(`${NEWS_API_ENDPOINT}/everything`, {
-    params: {
-      apiKey: NEWS_API_KEY,
-      q: query,
-    },
-  });
-}
-
-export function getSources() {
-  return axios.get(`${NEWS_API_ENDPOINT}/sources`, {
-    params: {
-      apiKey: NEWS_API_KEY,
-    },
-  });
-}
+// export function getEverything(sourceId) {
+//   return axios.get(`${BASE_URL}/everything/${sourceId}.json`);
+// }
