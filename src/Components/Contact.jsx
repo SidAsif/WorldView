@@ -23,13 +23,17 @@ const Footer = () => {
   return (
     <footer
       style={{
-        backgroundColor: "black",
-        color: "white",
         padding: "40px 0",
         position: "sticky",
       }}
     >
-      <Container maxWidth="xl">
+      ,
+      <Container
+        maxWidth="xl"
+        sx={{
+          backgroundColor: "rgb(252 252 252)",
+        }}
+      >
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Typography variant="h6" gutterBottom>
@@ -84,7 +88,7 @@ const Footer = () => {
                 href="https://www.facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#008080"
+                color="#000000"
               >
                 <FaFacebook style={{ fontSize: "24px" }} />
               </Link>
@@ -92,7 +96,7 @@ const Footer = () => {
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#008080"
+                color="#000000"
               >
                 <FaInstagram style={{ fontSize: "24px" }} />
               </Link>
@@ -100,7 +104,7 @@ const Footer = () => {
                 href="https://github.com/SidAsif"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#008080"
+                color="#000000"
               >
                 <FaGithub style={{ fontSize: "24px" }} />
               </Link>
@@ -108,7 +112,7 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#008080"
+                color="#000000"
               >
                 <FaTwitter style={{ fontSize: "24px" }} />
               </Link>
@@ -116,7 +120,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/in/md-asif-siddiqui-157497208/"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#008080"
+                color="#000000"
               >
                 <FaLinkedin style={{ fontSize: "24px" }} />
               </Link>

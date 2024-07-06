@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { TravelExplore } from "@mui/icons-material";
+import { AccountCircle, TravelExplore } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
@@ -29,14 +29,16 @@ export default function Nav() {
   };
 
   const appBarStyle = {
-    backgroundColor: "black",
+    backgroundColor: "rgb(252 252 252)",
     height: "65px",
+    color: "Black",
   };
 
   const linkStyle = {
-    color: "white",
+    color: "Black",
     textDecoration: "none",
     marginLeft: "20px",
+    fontSize: "1.5rem",
   };
   const smallScreenStyle = {
     color: "black",
@@ -47,7 +49,7 @@ export default function Nav() {
   if (isSmallScreen) {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="fixed" style={appBarStyle}>
+        <AppBar position="fixed" style={appBarStyle} elevation={0}>
           <Toolbar variant="dense" style={{ paddingTop: "10px" }}>
             <IconButton size="large" edge="start" color="inherit">
               <TravelExplore />
@@ -129,10 +131,10 @@ export default function Nav() {
   } else {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="fixed" style={appBarStyle}>
+        <AppBar position="fixed" style={appBarStyle} elevation={0}>
           <Toolbar variant="dense" style={{ paddingTop: "10px" }}>
             <IconButton size="large" edge="start" color="inherit">
-              <TravelExplore />
+              <TravelExplore sx={{ fontSize: "2.5rem", ml: 2 }} />
             </IconButton>
             <Typography
               variant="h5"
@@ -142,6 +144,7 @@ export default function Nav() {
                 flexGrow: 1,
                 fontWeight: "bold",
                 letterSpacing: "2px",
+                fontSize: "1.8rem",
               }}
             >
               World
@@ -152,6 +155,7 @@ export default function Nav() {
                   color: "#008080",
                   fontWeight: "bold",
                   letterSpacing: "2px",
+                  fontSize: "1.8rem",
                 }}
               >
                 View
@@ -176,6 +180,11 @@ export default function Nav() {
                 Contact Us
               </ScrollLink>
             </Typography>
+            <IconButton>
+              <AccountCircle
+                sx={{ fontSize: "2.5rem", ml: 2, color: "black" }}
+              />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </Box>
