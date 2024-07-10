@@ -125,7 +125,11 @@ export default function CountryDetails(props) {
                 History
               </Typography>
               <Divider sx={{ my: 1 }} />
-              <Typography variant="body1" paragraph>
+              <Typography
+                variant="body1"
+                paragraph
+                sx={{ textAlign: "justify" }}
+              >
                 {additionalDetails || "No data Available"}
               </Typography>
               <Typography variant="h5" sx={{ mt: 2 }}>

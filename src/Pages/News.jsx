@@ -111,10 +111,26 @@ export default function News() {
                     }
                   />
                   <CardContent>
-                    <Typography variant="h6" component="div">
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        textAlign: "justify",
+                        lineHeight: "25px",
+                        hyphens: "auto",
+                      }}
+                      gutterBottom
+                    >
                       {article.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        textAlign: "justify",
+                        hyphens: "auto",
+                      }}
+                    >
                       {article.description}
                     </Typography>
                   </CardContent>
