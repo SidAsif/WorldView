@@ -25,15 +25,23 @@ const Footer = () => {
       style={{
         padding: "40px 0",
         position: "sticky",
+        backgroundImage: "url('map.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        color: "white",
+        width: "100%",
+        margin: 0,
       }}
     >
       <Container
         maxWidth="xl"
+        disableGutters
         sx={{
-          backgroundColor: "rgb(252 252 252)",
+          padding: "20px",
+          borderRadius: "8px",
         }}
       >
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
           <Grid item xs={12} md={4}>
             <Typography variant="h6" gutterBottom>
               About WorldView
@@ -87,7 +95,7 @@ const Footer = () => {
                 href="https://www.facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#000000"
+                color="inherit"
               >
                 <FaFacebook style={{ fontSize: "24px" }} />
               </Link>
@@ -95,7 +103,7 @@ const Footer = () => {
                 href="https://www.instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#000000"
+                color="inherit"
               >
                 <FaInstagram style={{ fontSize: "24px" }} />
               </Link>
@@ -103,7 +111,7 @@ const Footer = () => {
                 href="https://github.com/SidAsif"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#000000"
+                color="inherit"
               >
                 <FaGithub style={{ fontSize: "24px" }} />
               </Link>
@@ -111,7 +119,7 @@ const Footer = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#000000"
+                color="inherit"
               >
                 <FaTwitter style={{ fontSize: "24px" }} />
               </Link>
@@ -119,7 +127,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/in/md-asif-siddiqui-157497208/"
                 target="_blank"
                 rel="noopener noreferrer"
-                color="#000000"
+                color="inherit"
               >
                 <FaLinkedin style={{ fontSize: "24px" }} />
               </Link>
@@ -154,7 +162,7 @@ const Footer = () => {
         <Typography
           variant="body2"
           align="center"
-          style={{ marginTop: "20px", color: "#000000" }}
+          style={{ marginTop: "20px" }}
         >
           &copy; {new Date().getFullYear()} CodeCraft. All rights reserved.
         </Typography>
