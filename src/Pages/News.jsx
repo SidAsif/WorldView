@@ -34,7 +34,7 @@ export default function News() {
     setLoading(true);
 
     axios
-      .get(`\netlify\functions\newsProxy.js?q=${category}`)
+      .get(`/.netlify/functions/newsProxy?q=${category}`)
       .then((response) => {
         setNews(response.data.articles);
         setLoading(false);
