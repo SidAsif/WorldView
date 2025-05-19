@@ -10,9 +10,9 @@ import {
   Button,
   ButtonGroup,
   Skeleton,
+  Pagination,
 } from "@mui/material";
 
-const BASE_URL = "https://saurav.tech/NewsAPI/";
 const CATEGORIES = [
   "general",
   "business",
@@ -22,14 +22,17 @@ const CATEGORIES = [
   "sports",
   "technology",
 ];
-
+const ARTICLES_PER_PAGE = 15;
 export default function News() {
   const [news, setNews] = useState([]);
   const [category, setCategory] = useState("general");
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const TOP_HEADLINES_API = `${BASE_URL}top-headlines/category/${category}/in.json`;
+    const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
+    const TOP_HEADLINES_API = `https://newsapi.org/v2/everything?q=${category}&apiKey=${API_KEY}`;
 
     setLoading(true);
     axios
@@ -37,6 +40,7 @@ export default function News() {
       .then((response) => {
         setNews(response.data.articles);
         setLoading(false);
+        setCurrentPage(1); // Reset to first page when category changes
       })
       .catch((error) => {
         console.error("Error fetching the news data:", error);
@@ -44,16 +48,45 @@ export default function News() {
       });
   }, [category]);
 
+  const totalPages = Math.ceil(news.length / ARTICLES_PER_PAGE);
+  const paginatedNews = news.slice(
+    (currentPage - 1) * ARTICLES_PER_PAGE,
+    currentPage * ARTICLES_PER_PAGE
+  );
+
   return (
     <Box sx={{ pt: 12, mt: 3, pr: 3, pl: 3, pb: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+        <input
+          type="text"
+          placeholder="Search news..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setCategory(searchTerm.trim() || "general");
+            }
+          }}
+          style={{
+            padding: "10px",
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "8px",
+            border: "1px solid #ccc",
+            fontSize: "16px",
+          }}
+        />
+      </Box>
+
+      {/* Category Buttons */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           mb: 3,
-          "@media (max-width: 600px)": {
-            display: "none",
-          },
+          overflowX: "auto",
+          flexWrap: "nowrap",
+          px: 1,
         }}
       >
         <ButtonGroup
@@ -61,16 +94,12 @@ export default function News() {
             backgroundColor: "#008080",
             "& .MuiButton-root": {
               color: "#fff",
-              "&:hover": {
-                backgroundColor: "#004d4d",
-              },
+              whiteSpace: "nowrap",
+              "&:hover": { backgroundColor: "#004d4d" },
             },
             "& .MuiButton-contained": {
               backgroundColor: "#004d4d",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor: "#004d4d",
-              },
+              "&:hover": { backgroundColor: "#004d4d" },
             },
           }}
         >
@@ -86,12 +115,14 @@ export default function News() {
           ))}
         </ButtonGroup>
       </Box>
+
+      {/* News Cards */}
       <Grid container spacing={3}>
         {loading
           ? Array.from(new Array(9)).map((_, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <Card>
-                  <Skeleton variant="rectangular" height={140} />
+                  <Skeleton variant="rectangular" height={180} />
                   <CardContent>
                     <Skeleton variant="text" />
                     <Skeleton variant="text" />
@@ -99,45 +130,106 @@ export default function News() {
                 </Card>
               </Grid>
             ))
-          : news.map((article, index) => (
+          : paginatedNews.map((article, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    alt={article.title}
-                    height="140"
-                    image={
-                      article.urlToImage || "https://via.placeholder.com/140"
-                    }
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      component="div"
-                      sx={{
-                        textAlign: "justify",
-                        lineHeight: "25px",
-                        hyphens: "auto",
-                      }}
-                      gutterBottom
-                    >
-                      {article.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        textAlign: "justify",
-                        hyphens: "auto",
-                      }}
-                    >
-                      {article.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <Card
+                    elevation={3}
+                    sx={{
+                      height: "100%",
+                      borderRadius: 3,
+                      transition: "transform 0.2s ease",
+                      "&:hover": {
+                        transform: "scale(1.02)",
+                        boxShadow: 6,
+                      },
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="180"
+                      image={
+                        article.urlToImage || "https://via.placeholder.com/180"
+                      }
+                      alt={article.title}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{
+                          fontWeight: "bold",
+                          color: "#333",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        {article.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          mb: 1,
+                        }}
+                      >
+                        {article.description}
+                      </Typography>
+                      <Button
+                        size="small"
+                        sx={{ mt: "auto", color: "#008080" }}
+                      >
+                        Read more →
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </a>
               </Grid>
             ))}
       </Grid>
+
+      {/* Pagination Controls */}
+      {!loading && news.length > ARTICLES_PER_PAGE && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 4,
+            padding: 2,
+          }}
+        >
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(event, value) => setCurrentPage(value)}
+            siblingCount={1}
+            boundaryCount={1}
+            shape="rounded"
+            sx={{
+              "& .Mui-selected": {
+                backgroundColor: "#008080 !important",
+                color: "white !important",
+              },
+              "& .Mui-selected:hover": {
+                backgroundColor: "#218080 !important",
+              },
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 }

@@ -17,20 +17,9 @@ export function getCountryAdditionalDetails(countryName) {
       action: "query",
       format: "json",
       prop: "extracts",
-      exintro: true,
       explaintext: true,
       titles: countryName,
-      origin: "*",
+      origin: "*", // required for CORS
     },
   });
 }
-
-// export function getTopHeadlines(category, countryCode) {
-//   return axios.get(
-//     `${BASE_URL}/top-headlines/category/${category}/${countryCode}.json`
-//   );
-// }
-
-// export function getEverything(sourceId) {
-//   return axios.get(`${BASE_URL}/everything/${sourceId}.json`);
-// }
