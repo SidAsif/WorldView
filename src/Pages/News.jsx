@@ -31,12 +31,10 @@ export default function News() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
-    const TOP_HEADLINES_API = `https://newsapi.org/v2/everything?q=${category}&apiKey=${API_KEY}`;
-
     setLoading(true);
+
     axios
-      .get(TOP_HEADLINES_API)
+      .get(`/.netlify/functions/newsProxy?q=${category}`)
       .then((response) => {
         setNews(response.data.articles);
         setLoading(false);
