@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import {
   getCountryDetails,
   getCountryAdditionalDetails,
@@ -17,7 +18,6 @@ import {
   Divider,
   useTheme,
 } from "@mui/material";
-
 function splitSections(text) {
   const lowerText = text.toLowerCase();
 
@@ -177,6 +177,7 @@ export default function CountryDetails() {
               <Tab label="Economy" />
               <Tab label="Geography" />
             </Tabs>
+
             <Divider />
             <CardContent>
               {loading ? (

@@ -39,6 +39,12 @@ export default function Nav() {
     textDecoration: "none",
     marginLeft: "20px",
     fontSize: "1.4rem",
+    fontWeight: "semibold",
+    letterSpacing: "1px",
+    "&:hover": {
+      color: "#008080",
+      textDecoration: "underline",
+    },
   };
   const smallScreenStyle = {
     color: "black",
@@ -117,10 +123,16 @@ export default function Nav() {
                 </RouterLink>
               </MenuItem>
               <MenuItem onClick={handleClose}>
+                <RouterLink to="/compare" style={smallScreenStyle}>
+                  GeoCompare
+                </RouterLink>
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
                 <RouterLink to="/news" style={smallScreenStyle}>
                   News
                 </RouterLink>
               </MenuItem>
+
               <MenuItem onClick={handleClose}>
                 <ScrollLink
                   to="contact"
@@ -176,9 +188,13 @@ export default function Nav() {
               <RouterLink to="/" style={linkStyle}>
                 Home
               </RouterLink>
+              <RouterLink to="/compare" style={linkStyle}>
+                GeoCompare
+              </RouterLink>
               <RouterLink to="/news" style={linkStyle}>
                 News
               </RouterLink>
+
               <ScrollLink
                 to="contact"
                 spy={true}
