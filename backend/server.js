@@ -1,39 +1,18 @@
-require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-const OpenAI = require("openai");
-
+require("dotenv").config();
+const authRoutes = require("./routes/auth");
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-// ✅ Initialize OpenAI client with your API key
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Mongo connected"))
+  .catch((err) => console.log(err));
 
-// 🌍 POST route for AI response
-app.post("/ask-ai", async (req, res) => {
-  try {
-    const { question, country } = req.body;
+app.use("/api/auth", authRoutes);
 
-    const prompt = `Answer this question about ${country}: ${question}`;
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
-    });
-
-    res.json({ answer: response.choices[0].message.content });
-  } catch (error) {
-    console.error("Error from OpenAI:", error);
-    res.status(500).json({ error: "Failed to get AI response" });
-  }
-});
-
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

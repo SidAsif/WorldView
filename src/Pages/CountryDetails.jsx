@@ -4,6 +4,8 @@ import {
   getCountryDetails,
   getCountryAdditionalDetails,
 } from "../Services/index";
+import PropTypes from "prop-types";
+
 import {
   Box,
   Typography,
@@ -54,16 +56,36 @@ export default function CountryDetails() {
       try {
         const countryDetailResponse = await getCountryDetails(countryCode);
         const country = countryDetailResponse.data;
-        setDetail(country);
+        const selectedCountry = Array.isArray(country) ? country[0] : country;
+        setDetail(selectedCountry);
 
-        const wikiRes = await getCountryAdditionalDetails(country.name);
-        const page = wikiRes.data.query.pages;
-        const extract = page[Object.keys(page)[0]].extract;
+        const countryName = selectedCountry?.name?.common;
+        const wikiRes = await getCountryAdditionalDetails(countryName);
+        // console.log("Wiki response:", JSON.stringify(wikiRes.data, null, 2));
 
+        const pageData = wikiRes?.data?.query?.pages;
+
+        if (!pageData || Object.keys(pageData).length === 0) {
+          console.warn("Wikipedia page not found for:", countryName);
+          setSections({
+            history: "No Wikipedia data available.",
+            economy: "",
+            geography: "",
+          });
+          return;
+        }
+
+        const extract =
+          pageData[Object.keys(pageData)[0]].extract || "No info found.";
         const parsed = splitSections(extract);
         setSections(parsed);
       } catch (err) {
         console.error("Error fetching data:", err);
+        setSections({
+          history: "Failed to load additional data.",
+          economy: "",
+          geography: "",
+        });
       } finally {
         setLoading(false);
       }
@@ -90,7 +112,7 @@ export default function CountryDetails() {
             color: theme.palette.primary.main,
           }}
         >
-          {detail?.name}
+          {detail?.name?.common ?? "No Name"}
         </Typography>
       )}
 
@@ -115,7 +137,9 @@ export default function CountryDetails() {
                 component="img"
                 height="300"
                 image={detail?.flags?.png}
-                alt={detail?.name}
+                alt={
+                  detail?.flags?.alt || detail?.name?.common || "Country Flag"
+                }
                 sx={{
                   objectFit: "cover",
                   filter: "brightness(0.95)",
@@ -128,26 +152,43 @@ export default function CountryDetails() {
                 <Skeleton height={200} />
               ) : (
                 <>
-                  <InfoItem label="Capital" value={detail?.capital} />
-                  <InfoItem label="Region" value={detail?.region} />
+                  <InfoItem
+                    label="Capital"
+                    value={detail?.capital?.join(", ") ?? "N/A"}
+                  />
+                  <InfoItem label="Region" value={detail?.region ?? "N/A"} />
                   <InfoItem
                     label="Area"
-                    value={`${detail?.area?.toLocaleString() ?? "N/A"} km²`}
+                    value={
+                      detail?.area
+                        ? `${detail.area.toLocaleString()} km²`
+                        : "N/A"
+                    }
                   />
                   <InfoItem
                     label="Population"
-                    value={detail?.population?.toLocaleString()}
+                    value={
+                      detail?.population
+                        ? detail.population.toLocaleString()
+                        : "N/A"
+                    }
                   />
                   <InfoItem
                     label="Currencies"
                     value={
-                      detail?.currencies?.map((c) => c.name).join(", ") ?? "N/A"
+                      detail?.currencies
+                        ? Object.values(detail.currencies)
+                            .map((c) => c.name)
+                            .join(", ")
+                        : "N/A"
                     }
                   />
                   <InfoItem
                     label="Languages"
                     value={
-                      detail?.languages?.map((l) => l.name).join(", ") ?? "N/A"
+                      detail?.languages
+                        ? Object.values(detail.languages).join(", ")
+                        : "N/A"
                     }
                   />
                   <InfoItem
@@ -213,12 +254,20 @@ const InfoItem = ({ label, value }) => (
     sx={{
       mb: 1,
       color: "text.primary",
-      "& span": {
+      "& span.label": {
         fontWeight: "bold",
         color: "primary.main",
       },
     }}
   >
-    <span>{label}:</span> {value || "N/A"}
+    <span className="label">{label}:</span>{" "}
+    <span>
+      {typeof value === "string" || typeof value === "number" ? value : "N/A"}
+    </span>
   </Typography>
 );
+
+InfoItem.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.node,
+};

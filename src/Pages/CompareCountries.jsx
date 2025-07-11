@@ -31,7 +31,9 @@ const CompareCountries = () => {
   useEffect(() => {
     const fetchAllCountries = async () => {
       try {
-        const res = await fetch("https://restcountries.com/v3.1/all");
+        const res = await fetch(
+          "https://restcountries.com/v3.1/all?fields=name,capital,region,flags,cca3,population,area,currencies"
+        );
         const data = await res.json();
         setAllCountries(data);
       } catch (err) {

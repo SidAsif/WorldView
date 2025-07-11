@@ -27,7 +27,9 @@ function Home() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://restcountries.com/v2/all");
+        const response = await axios.get(
+          "https://restcountries.com/v3.1/all?fields=name,capital,region,flags,population,cca3"
+        );
         setCountData(response.data);
         setLoading(false);
       } catch (error) {
@@ -56,7 +58,9 @@ function Home() {
   const sortedCountries = () => {
     const copy = [...filteredCoutriesList];
     return copy.sort((a, b) => {
-      const comparison = a[sortCriteria].localeCompare(b[sortCriteria]);
+      const aValue = String(a[sortCriteria] ?? "");
+      const bValue = String(b[sortCriteria] ?? "");
+      const comparison = aValue.localeCompare(bValue);
       return sortOrder === "asc" ? comparison : -comparison;
     });
   };
@@ -92,7 +96,7 @@ function Home() {
       if (countryName.length) {
         const lowercaseCountryName = countryName.toLowerCase();
         filteredCoutries = filteredCoutries.filter((country) =>
-          country.name.toLowerCase().includes(lowercaseCountryName)
+          country.name?.common?.toLowerCase().includes(lowercaseCountryName)
         );
       }
 
@@ -221,14 +225,14 @@ function Home() {
                   <Skeleton variant="rectangular" height={200} />
                 </Grid>
               ))
-            : currentPosts.map((country) => (
+            : currentPosts.map((country, index) => (
                 <Grid
                   item
                   xs={12}
                   sm={6}
                   md={4}
                   lg={3}
-                  key={country.alpha3Code}
+                  key={country.cca3}
                   sx={{
                     transition: "transform 0.3s",
                     "&:hover": {
@@ -237,15 +241,15 @@ function Home() {
                   }}
                 >
                   <Link
-                    to={`/countries/${country.alpha3Code}`}
+                    to={`/countries/${country.cca3}`}
                     style={{ textDecoration: "none" }}
                   >
                     <CountryCard
                       countdata={countdata}
-                      name={country.name}
-                      capital={country.capital}
+                      name={country.name?.common}
+                      capital={country.capital?.[0]}
                       population={country.population}
-                      flagUrl={country.flags.png}
+                      flagUrl={country.flags?.png}
                     />
                   </Link>
                 </Grid>

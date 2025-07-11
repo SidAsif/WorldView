@@ -7,11 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Link as RouterLink } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AccountCircle, TravelExplore } from "@mui/icons-material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import Button from "@mui/material/Button";
 
 export default function Nav() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -20,12 +20,21 @@ export default function Nav() {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+  // Simulating auth state; replace with your actual auth context
+  const isLoggedIn = false; // Change to true to test logged-in state
+
+  const navigate = useNavigate();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignupClick = () => {
+    navigate("/signup");
   };
 
   const appBarStyle = {
@@ -109,7 +118,6 @@ export default function Nav() {
               PaperProps={{
                 style: {
                   width: "100%",
-                  // maxWidth: "100%",
                   left: 0,
                   right: 0,
                   top: 56,
@@ -131,19 +139,6 @@ export default function Nav() {
                 <RouterLink to="/news" style={smallScreenStyle}>
                   News
                 </RouterLink>
-              </MenuItem>
-
-              <MenuItem onClick={handleClose}>
-                <ScrollLink
-                  to="contact"
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                  style={smallScreenStyle}
-                >
-                  Contact Us
-                </ScrollLink>
               </MenuItem>
             </Menu>
           </Toolbar>
@@ -194,23 +189,25 @@ export default function Nav() {
               <RouterLink to="/news" style={linkStyle}>
                 News
               </RouterLink>
-
-              <ScrollLink
-                to="contact"
-                spy={true}
-                smooth={true}
-                offset={-70}
-                duration={500}
-                style={linkStyle}
-              >
-                Contact Us
-              </ScrollLink>
             </Typography>
-            <IconButton>
-              <AccountCircle
-                sx={{ fontSize: "2.5rem", ml: 2, color: "black" }}
-              />
-            </IconButton>
+
+            {/* Conditionally render Signup or Profile */}
+            {isLoggedIn ? (
+              <IconButton>
+                <AccountCircle
+                  sx={{ fontSize: "2.5rem", ml: 2, color: "black" }}
+                />
+              </IconButton>
+            ) : (
+              <Button
+                variant="outlined"
+                color="primary"
+                sx={{ ml: 2, fontWeight: "bold" }}
+                onClick={handleSignupClick}
+              >
+                Signup
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
