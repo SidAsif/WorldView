@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 export default function CountryCard(props) {
   const { name, capital, population, flagUrl } = props;
-  console.log("CountryCard props:", props);
+  // console.log("CountryCard props:", props);
 
   return (
     <Card
