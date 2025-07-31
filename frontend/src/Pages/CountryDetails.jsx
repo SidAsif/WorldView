@@ -5,6 +5,10 @@ import {
   getCountryAdditionalDetails,
 } from "../Services/index";
 import PropTypes from "prop-types";
+import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 import {
   Box,
@@ -18,7 +22,11 @@ import {
   Tab,
   Divider,
   useTheme,
+  IconButton,
 } from "@mui/material";
+import toast from "react-hot-toast";
+import CountryChatbotLauncher from "./CountryChatbotLauncher";
+import { API_CONFIG } from "../config/api";
 function splitSections(text) {
   const lowerText = text.toLowerCase();
 
@@ -50,7 +58,8 @@ export default function CountryDetails() {
   });
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState(0);
-
+  const { user } = useUser(); // Clerk's logged-in user
+  const [bookmarked, setBookmarked] = useState(false);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -61,8 +70,6 @@ export default function CountryDetails() {
 
         const countryName = selectedCountry?.name?.common;
         const wikiRes = await getCountryAdditionalDetails(countryName);
-        // console.log("Wiki response:", JSON.stringify(wikiRes.data, null, 2));
-
         const pageData = wikiRes?.data?.query?.pages;
 
         if (!pageData || Object.keys(pageData).length === 0) {
@@ -95,6 +102,72 @@ export default function CountryDetails() {
   }, [countryCode]);
 
   const handleTabChange = (e, newValue) => setTab(newValue);
+  useEffect(() => {
+    if (!user) {
+      setBookmarked(false);
+      return;
+    }
+
+    async function checkBookmark() {
+      try {
+        const res = await axios.get(
+          `${API_CONFIG.baseURL}${API_CONFIG.endpoints.getBookmarks}`,
+          {
+            headers: { "x-user-id": user.id },
+          }
+        );
+        const bookmarkedCountries = res.data.map((b) => b.countryCode);
+        setBookmarked(bookmarkedCountries.includes(countryCode));
+      } catch (error) {
+        console.error("Error checking bookmarks", error);
+        setBookmarked(false);
+      }
+    }
+
+    checkBookmark();
+  }, [user, countryCode]);
+
+  const toggleBookmark = async () => {
+    if (!user) return alert("Please login to save this country.");
+
+    if (!bookmarked) {
+      await saveBookmark();
+      setBookmarked(true);
+    } else {
+      await removeBookmark();
+      setBookmarked(false);
+    }
+  };
+
+  const saveBookmark = async () => {
+    if (!user) return toast.error("Please login to save this country.");
+    try {
+      await axios.post(
+        `${API_CONFIG.baseURL}${API_CONFIG.endpoints.saveBookmark}`,
+        { countryCode },
+        { headers: { "x-user-id": user.id } }
+      );
+      toast.success("Country saved successfully!");
+    } catch (error) {
+      toast.error("Failed to save bookmark.");
+    }
+  };
+
+  const removeBookmark = async () => {
+    try {
+      await axios.delete(
+        `${API_CONFIG.baseURL}${API_CONFIG.endpoints.removeBookmark(
+          countryCode
+        )}`,
+        {
+          headers: { "x-user-id": user.id },
+        }
+      );
+      toast.success("Bookmark removed!");
+    } catch (error) {
+      toast.error("Failed to remove bookmark.");
+    }
+  };
 
   return (
     <Box sx={{ mt: 10, px: { xs: 2, sm: 4 } }}>
@@ -133,19 +206,57 @@ export default function CountryDetails() {
             {loading ? (
               <Skeleton variant="rectangular" width="100%" height={300} />
             ) : (
-              <CardMedia
-                component="img"
-                height="300"
-                image={detail?.flags?.png}
-                alt={
-                  detail?.flags?.alt || detail?.name?.common || "Country Flag"
-                }
-                sx={{
-                  objectFit: "cover",
-                  filter: "brightness(0.95)",
-                  transition: "0.3s",
-                }}
-              />
+              <Box sx={{ position: "relative" }}>
+                <CardMedia
+                  component="img"
+                  height="300"
+                  image={detail?.flags?.png}
+                  alt={
+                    detail?.flags?.alt || detail?.name?.common || "Country Flag"
+                  }
+                  sx={{
+                    objectFit: "cover",
+                    filter: "brightness(0.95)",
+                    transition: "0.3s",
+                  }}
+                />
+                <IconButton
+                  onClick={toggleBookmark}
+                  sx={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    backgroundColor: "rgba(255,255,255,0.85)",
+                    boxShadow: 3,
+                    backdropFilter: "blur(2px)",
+                    transition: "background-color 0.2s, transform 0.15s",
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,1)",
+                      transform: "scale(1.1)",
+                    },
+                    zIndex: 1,
+                  }}
+                >
+                  {bookmarked ? (
+                    <BookmarkIcon
+                      sx={{
+                        color: "#1565c0",
+                        fontSize: 30,
+                        transition: "color 0.2s, transform 0.2s",
+                        transform: "scale(1.1)",
+                      }}
+                    />
+                  ) : (
+                    <BookmarkBorderIcon
+                      sx={{
+                        color: "#222",
+                        fontSize: 30,
+                        transition: "color 0.2s, transform 0.2s",
+                      }}
+                    />
+                  )}
+                </IconButton>
+              </Box>
             )}
             <CardContent>
               {loading ? (
@@ -242,6 +353,11 @@ export default function CountryDetails() {
             </CardContent>
           </Card>
         </Grid>
+        {!loading && detail?.name?.common && (
+          <>
+            <CountryChatbotLauncher countryName={detail.name.common} />
+          </>
+        )}
       </Grid>
     </Box>
   );

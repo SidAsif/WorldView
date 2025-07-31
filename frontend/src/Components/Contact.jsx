@@ -11,7 +11,6 @@ import {
 import {
   FaHome,
   FaEnvelope,
-  FaPhone,
   FaFacebook,
   FaInstagram,
   FaGithub,
@@ -78,10 +77,7 @@ const Footer = () => {
                 }}
               >
                 <FaEnvelope style={{ marginRight: "10px" }} />{" "}
-                stemp@098@gmail.com
-              </li>
-              <li style={{ display: "flex", alignItems: "center" }}>
-                <FaPhone style={{ marginRight: "10px" }} /> +918604899882
+                stemp0981@gmail.com
               </li>
             </Box>
           </Grid>
@@ -164,7 +160,8 @@ const Footer = () => {
           align="center"
           style={{ marginTop: "20px" }}
         >
-          &copy; {new Date().getFullYear()} CodeCraft. All rights reserved.
+          &copy; {new Date().getFullYear()} WorldView — Made with ❤️ for the
+          world by Asif Siddiqui.
         </Typography>
       </Container>
     </footer>

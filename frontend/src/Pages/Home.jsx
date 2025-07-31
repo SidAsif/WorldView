@@ -16,7 +16,6 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 
 function Home() {
   const [countdata, setCountData] = React.useState([]);
@@ -27,13 +26,11 @@ function Home() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://restcountries.com/v3.1/all?fields=name,capital,region,flags,population,cca3"
-        );
+        const response = await getAllCountries();
         setCountData(response.data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
         setLoading(false);
       }
     };
