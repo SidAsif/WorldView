@@ -16,7 +16,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "https://theworldviews.netlify.app/",
+    origin: "https://theworldviews.netlify.app",
   })
 );
 app.use(express.json());
