@@ -29,7 +29,7 @@ const fetchCountryDetails = async (countryCode) => {
 };
 const SavedCountries = () => {
   const { user } = useUser();
-  const [bookmarks, setBookmarks] = useState([]);
+  // const [bookmarks, setBookmarks] = useState([]);
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,7 +43,7 @@ const SavedCountries = () => {
             headers: { "x-user-id": user.id },
           }
         );
-        setBookmarks(res.data);
+        // setBookmarks(res.data);
 
         // Fetch full country details for each saved country code
         const countryDetailsPromises = res.data.map((bookmark) =>
