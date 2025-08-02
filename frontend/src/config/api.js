@@ -11,5 +11,6 @@ export const API_CONFIG = {
     updateStory: (id) => `/api/stories/${id}`,
     deleteStory: (id) => `/api/stories/${id}`,
     ImageKitAuth: "/api/imagekit/auth",
+    subscribe: "/api/subscribe",
   },
 };
