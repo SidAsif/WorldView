@@ -1,6 +1,7 @@
 // config/api.js
 export const API_CONFIG = {
-  baseURL: "https://worldview-veow.onrender.com",
+  baseURL: "http://localhost:5000", // Local development URL
+  // https://worldview-veow.onrender.com
   endpoints: {
     saveBookmark: "/api/bookmarks/save",
     removeBookmark: (countryCode) => `/api/bookmarks/remove/${countryCode}`,

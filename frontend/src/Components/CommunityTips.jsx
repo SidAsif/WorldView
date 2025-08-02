@@ -54,6 +54,7 @@ export default function CommunityTips() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [expandedCards, setExpandedCards] = useState({});
 
   // For edit functionality
   const [isEdit, setIsEdit] = useState(false);
@@ -291,7 +292,14 @@ export default function CommunityTips() {
   };
   const closeGallery = () => setGalleryOpen(false);
 
-  // --- UI ---
+  // --- "Read More"/"Show Less" handlers ---
+  const toggleExpand = (id, e) => {
+    e.stopPropagation();
+    setExpandedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
   return (
     <Box sx={{ mt: 12, mb: 7, px: { xs: 2, md: 0 } }}>
       <Typography
@@ -356,116 +364,133 @@ export default function CommunityTips() {
           </Grid>
         )}
         {filteredTips.length ? (
-          filteredTips.map((story) => (
-            <Grid item xs={6} sm={4} md={3} key={story._id}>
-              <Card
-                sx={{
-                  bgcolor: "#fff",
-                  borderRadius: 3,
-                  boxShadow: 3,
-                  minHeight: 240,
-                  display: "flex",
-                  flexDirection: "column",
-                  overflow: "hidden",
-                  transition: "box-shadow 0.2s, transform 0.15s",
-                  "&:hover": {
-                    boxShadow: 9,
-                    transform: "translateY(-4px) scale(1.025)",
-                  },
-                  cursor:
-                    story.images && story.images.length > 1
-                      ? "pointer"
-                      : "default",
-                  position: "relative",
-                }}
-                onClick={() =>
-                  story.images &&
-                  story.images.length > 0 &&
-                  openGallery(story.images)
-                }
-              >
-                {story.images && story.images.length > 0 && (
-                  <Box
-                    component="img"
-                    src={story.images[0]}
-                    alt="Thumbnail"
-                    sx={{
-                      width: "100%",
-                      height: 150,
-                      objectFit: "cover",
-                      transition: "filter 0.2s",
-                    }}
-                  />
-                )}
-                {/* Edit/Delete icons shown only for your own posts (not in gallery click area) */}
-                {isUserStory(story) && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 8,
-                      right: 8,
-                      zIndex: 15,
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <IconButton
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openModalForEdit(story);
+          filteredTips.map((story) => {
+            const isExpanded = expandedCards[story._id] || false;
+            return (
+              <Grid item xs={6} sm={4} md={3} key={story._id}>
+                <Card
+                  sx={{
+                    bgcolor: "#fff",
+                    borderRadius: 3,
+                    boxShadow: 3,
+                    minHeight: 240,
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "hidden",
+                    transition: "box-shadow 0.2s, transform 0.15s",
+                    "&:hover": {
+                      boxShadow: 9,
+                      transform: "translateY(-4px) scale(1.025)",
+                    },
+                    cursor:
+                      story.images && story.images.length > 1
+                        ? "pointer"
+                        : "default",
+                    position: "relative",
+                  }}
+                  onClick={() =>
+                    story.images &&
+                    story.images.length > 0 &&
+                    openGallery(story.images)
+                  }
+                >
+                  {story.images && story.images.length > 0 && (
+                    <Box
+                      component="img"
+                      src={story.images[0]}
+                      alt="Thumbnail"
+                      sx={{
+                        width: "100%",
+                        height: 150,
+                        objectFit: "cover",
+                        transition: "filter 0.2s",
                       }}
+                    />
+                  )}
+                  {isUserStory(story) && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        zIndex: 15,
+                        display: "flex",
+                        gap: 1,
+                      }}
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openModalForEdit(story);
+                        }}
+                        color="primary"
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteStory(story._id);
+                        }}
+                        color="error"
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  )}
+                  <CardContent sx={{ flexGrow: 1, py: 2 }}>
+                    <Typography
+                      variant="subtitle2"
+                      fontWeight={700}
                       color="primary"
-                    >
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteStory(story._id);
+                      sx={{
+                        mb: 0.75,
+                        textTransform: "capitalize",
+                        fontSize: "1.05rem",
                       }}
-                      color="error"
                     >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                )}
-                <CardContent sx={{ flexGrow: 1, py: 2 }}>
-                  <Typography
-                    variant="subtitle2"
-                    fontWeight={700}
-                    color="primary"
-                    sx={{
-                      mb: 0.75,
-                      textTransform: "capitalize",
-                      fontSize: "1.05rem",
-                    }}
-                  >
-                    {story.country}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      whiteSpace: "pre-line",
-                      mb: 1,
-                      fontSize: "1rem",
-                      color: "#363636",
-                    }}
-                  >
-                    {story.text}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ fontStyle: "italic" }}
-                  >
-                    - {story.author}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))
+                      {story.country}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={
+                        isExpanded
+                          ? {
+                              whiteSpace: "break-spaces",
+                              wordBreak: "break-word",
+                            }
+                          : {
+                              display: "-webkit-box",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              whiteSpace: "normal",
+                            }
+                      }
+                    >
+                      {story.text}
+                    </Typography>
+                    <Button
+                      size="small"
+                      onClick={(e) => toggleExpand(story._id, e)}
+                    >
+                      {isExpanded ? "Show Less" : "Read More"}
+                    </Button>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ fontStyle: "italic", mt: 1 }}
+                    >
+                      - {story.author}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })
         ) : (
           <Grid item xs={12}>
             <Typography align="center" variant="body2" color="text.secondary">
