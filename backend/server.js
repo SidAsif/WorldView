@@ -10,7 +10,7 @@ const bookmarkRoutes = require("./routes/bookmark");
 const chatbotRouter = require("./routes/chatbot");
 const StoryRoutes = require("./routes/stories");
 const imagekitRoutes = require("./routes/imagekit");
-
+const subscribeRoute = require("./routes/subscribe");
 const app = express();
 
 // Middleware
@@ -38,6 +38,7 @@ app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/chat", chatbotRouter);
 app.use("/api/stories", StoryRoutes);
 app.use("/api/imagekit", imagekitRoutes);
+app.use("/api/subscribe", subscribeRoute);
 
 // Health check endpoint
 app.get("/health", (req, res) => {
