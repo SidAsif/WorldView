@@ -4,18 +4,22 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { ClerkExpressWithAuth } = require("@clerk/clerk-sdk-node");
 
-// Import your Clerk-protected routes
+// Import routes
 const userRoutes = require("./routes/userRoutes");
 const bookmarkRoutes = require("./routes/bookmark");
 const chatbotRouter = require("./routes/chatbot");
 const StoryRoutes = require("./routes/stories");
 const imagekitRoutes = require("./routes/imagekit");
+
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://theworldviews.netlify.app/",
+  })
+);
 app.use(express.json());
-
 app.use(
   ClerkExpressWithAuth({
     secretKey: process.env.CLERK_SECRET_KEY,
@@ -34,7 +38,8 @@ app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/chat", chatbotRouter);
 app.use("/api/stories", StoryRoutes);
 app.use("/api/imagekit", imagekitRoutes);
-// Health check route
+
+// Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
