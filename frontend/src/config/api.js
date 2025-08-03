@@ -1,6 +1,10 @@
-// config/api.js
+const isProduction = process.env.NODE_ENV === "production";
+
 export const API_CONFIG = {
-  baseURL: "https://worldview-veow.onrender.com",
+  baseURL: isProduction
+    ? "https://worldview-veow.onrender.com" // production URL
+    : "http://localhost:5000", // local dev
+
   endpoints: {
     saveBookmark: "/api/bookmarks/save",
     removeBookmark: (countryCode) => `/api/bookmarks/remove/${countryCode}`,

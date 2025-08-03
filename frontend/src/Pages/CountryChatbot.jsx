@@ -71,32 +71,42 @@ export default function CountryChatbot({ countryName }) {
   return (
     <Box
       sx={{
-        p: 2,
+        p: { xs: 1, sm: 2 },
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        maxWidth: "100%",
       }}
     >
-      {/* Header with improved typography and teal color */}
-      <Box sx={{ mb: 1 }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ color: "#0f766e" }}>
+      {/* Header */}
+      <Box sx={{ mb: 2 }}>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ color: "#0f766e", fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+        >
           Chat about {countryName}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: { xs: "0.85rem", sm: "0.95rem" } }}
+        >
           Your AI travel guide. Ask anything below!
         </Typography>
       </Box>
 
-      {/* Messages container */}
+      {/* Messages */}
       <Paper
         variant="outlined"
         sx={{
           flexGrow: 1,
-          mb: 1,
-          p: 2,
+          mb: 2,
+          p: { xs: 1, sm: 2 },
           overflowY: "auto",
-          maxHeight: "42vh",
+          maxHeight: { xs: "40vh", sm: "50vh" },
           bgcolor: "#fafafa",
+          borderRadius: 2,
         }}
       >
         {messages.map((msg, i) => (
@@ -112,10 +122,12 @@ export default function CountryChatbot({ countryName }) {
               component="span"
               variant="body1"
               sx={{
-                p: 1.2,
+                px: 1.5,
+                py: 1,
                 borderRadius: 2,
                 maxWidth: "80%",
                 whiteSpace: "pre-line",
+                fontSize: { xs: "0.85rem", sm: "0.95rem" },
                 bgcolor: msg.sender === "user" ? "primary.main" : "#e0e0e0",
                 color: msg.sender === "user" ? "white" : "text.primary",
               }}
@@ -132,11 +144,16 @@ export default function CountryChatbot({ countryName }) {
         )}
       </Paper>
 
-      {/* Input form: input and button inline with teal styling */}
+      {/* Input Section */}
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "stretch",
+          gap: 1,
+        }}
       >
         <TextField
           variant="outlined"
@@ -154,18 +171,18 @@ export default function CountryChatbot({ countryName }) {
         <Button
           type="submit"
           disabled={loading || !input.trim()}
+          variant="outlined"
           sx={{
-            whiteSpace: "nowrap",
-            height: 40,
+            height: { xs: "auto", sm: 40 },
             borderColor: "#0f766e",
             color: "#0f766e",
+            fontWeight: "bold",
             "&:hover": {
               backgroundColor: "#0f766e",
               color: "white",
               borderColor: "#0f766e",
             },
           }}
-          variant="outlined"
         >
           Send
         </Button>

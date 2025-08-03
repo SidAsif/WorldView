@@ -14,11 +14,24 @@ const subscribeRoute = require("./routes/subscribe");
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  "https://theworldviews.netlify.app",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: "https://theworldviews.netlify.app",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
   })
 );
+
 app.use(express.json());
 app.use(
   ClerkExpressWithAuth({
