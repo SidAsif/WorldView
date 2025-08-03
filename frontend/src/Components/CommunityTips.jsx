@@ -31,12 +31,12 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  width: "90vw",
+  maxWidth: 500,
   bgcolor: "background.paper",
-  boxShadow: 8,
-  borderRadius: 3,
-  p: 4,
-  width: "100%",
-  maxWidth: 400,
+  boxShadow: 24,
+  p: { xs: 2, sm: 3 },
+  borderRadius: 2,
 };
 
 export default function CommunityTips() {
@@ -336,7 +336,7 @@ export default function CommunityTips() {
         sx={{ justifyContent: { xs: "center", md: "flex-start" } }}
       >
         {user && (
-          <Grid item xs={6} sm={4} md={3}>
+          <Grid item xs={12} sm={12} md={6} lg={3}>
             <Card
               sx={{
                 minHeight: 270,
@@ -367,7 +367,7 @@ export default function CommunityTips() {
           filteredTips.map((story) => {
             const isExpanded = expandedCards[story._id] || false;
             return (
-              <Grid item xs={6} sm={4} md={3} key={story._id}>
+              <Grid item xs={12} sm={12} md={6} lg={3} key={story._id}>
                 <Card
                   sx={{
                     bgcolor: "#fff",
