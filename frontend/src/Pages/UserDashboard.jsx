@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   Grid,
+  Button,
 } from "@mui/material";
 import SavedCountries from "./SavedCountries";
 import axios from "axios";
@@ -18,6 +19,15 @@ function UserStories() {
   const { user } = useUser();
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCards, setExpandedCards] = useState({});
+
+  const toggleExpand = (id, e) => {
+    e.stopPropagation(); // Optional, prevents parent click if needed
+    setExpandedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -62,9 +72,33 @@ function UserStories() {
               <Typography variant="subtitle2" color="primary">
                 {country}
               </Typography>
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography
+                variant="body2"
+                sx={
+                  expandedCards[_id]
+                    ? {
+                        whiteSpace: "break-spaces",
+                        wordBreak: "break-word",
+                      }
+                    : {
+                        display: "-webkit-box",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        whiteSpace: "normal",
+                      }
+                }
+              >
                 {text}
               </Typography>
+              <Button
+                size="small"
+                onClick={(e) => toggleExpand(_id, e)}
+                sx={{ mt: 1 }}
+              >
+                {expandedCards[_id] ? "Show Less" : "Read More"}
+              </Button>
             </CardContent>
           </Card>
         </Grid>

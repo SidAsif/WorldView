@@ -25,6 +25,7 @@ import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import { API_CONFIG } from "../config/api";
 import { getAllCountries } from "../Services";
+import Skeleton from "@mui/material/Skeleton";
 
 const modalStyle = {
   position: "absolute",
@@ -55,11 +56,11 @@ export default function CommunityTips() {
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [expandedCards, setExpandedCards] = useState({});
-
   // For edit functionality
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
   const [existingImages, setExistingImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -79,12 +80,15 @@ export default function CommunityTips() {
 
   async function fetchTips() {
     try {
+      setIsLoading(true); // Start loading
       const { data } = await axios.get(
         `${API_CONFIG.baseURL}${API_CONFIG.endpoints.getAllStories}`
       );
       setCommunityTips(data);
     } catch (err) {
       toast.error("Failed to load stories.");
+    } finally {
+      setIsLoading(false); // Done loading (success or error)
     }
   }
 
@@ -363,7 +367,29 @@ export default function CommunityTips() {
             </Card>
           </Grid>
         )}
-        {filteredTips.length ? (
+        {isLoading ? (
+          Array.from(new Array(4)).map((_, idx) => (
+            <Grid item xs={12} sm={12} md={6} lg={3} key={`skeleton-${idx}`}>
+              <Card
+                sx={{
+                  minHeight: 240,
+                  borderRadius: 3,
+                  boxShadow: 3,
+                  p: 2,
+                }}
+              >
+                <Skeleton
+                  variant="rectangular"
+                  height={150}
+                  sx={{ borderRadius: 2 }}
+                />
+                <Skeleton width="60%" sx={{ mt: 2 }} />
+                <Skeleton width="90%" />
+                <Skeleton width="40%" />
+              </Card>
+            </Grid>
+          ))
+        ) : filteredTips.length ? (
           filteredTips.map((story) => {
             const isExpanded = expandedCards[story._id] || false;
             return (
